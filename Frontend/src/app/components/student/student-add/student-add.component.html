@@ -1,0 +1,10 @@
+<div class="container">
+    <h2>Add Student</h2>
+    <form (ngSubmit)="addStudent()" #studentForm="ngForm">
+      <input type="text" name="name" [(ngModel)]="student.name" placeholder="Name" required />
+      <input type="email" name="email" [(ngModel)]="student.email" placeholder="Email" required />
+      <input type="text" name="course" [(ngModel)]="student.course" placeholder="Course" required />
+      <button type="submit">Submit</button>
+    </form>
+  </div>
+  
