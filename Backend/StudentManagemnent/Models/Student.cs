@@ -1,24 +1,34 @@
 ﻿using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
+
 namespace StudentManagemnent.Models
 {
-    // When data is retrieved from mongodb database the student json data is mapped to this student class in .net
-    [BsonIgnoreExtraElements]
+    // This class represents the structure of a Student document stored in the MongoDB collection
+    [BsonIgnoreExtraElements] // Ignores any additional fields in the MongoDB document that are not defined in this class
     public class Student
     {
-        // Within this student class we need few properties
+        // This property maps to the MongoDB _id field
         [BsonId]
-        // BsonRepresentation attribute automatically converts json data type into .net data type
-        [BsonRepresentation(BsonType.ObjectId)]
+        [BsonRepresentation(BsonType.ObjectId)] // Automatically converts between string in .NET and ObjectId in MongoDB
         public string Id { get; set; } = string.Empty;
+
+        // Name of the student
         [BsonElement("name")]
         public string Name { get; set; } = string.Empty;
+
+        // Indicates if the student has graduated
         [BsonElement("graduated")]
         public bool IsGraduated { get; set; }
+
+        // List of courses the student is enrolled in
         [BsonElement("courses")]
         public string[]? Courses { get; set; }
+
+        // Gender of the student
         [BsonElement("gender")]
         public string Gender { get; set; } = string.Empty;
+
+        // Age of the student
         [BsonElement("age")]
         public int Age { get; set; }
     }

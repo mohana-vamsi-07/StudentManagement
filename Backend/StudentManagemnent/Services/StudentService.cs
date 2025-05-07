@@ -3,44 +3,55 @@ using MongoDB.Driver;
 
 namespace StudentManagemnent.Services
 {
+    // Implementation of IStudentService to handle student data using MongoDB
     public class StudentService : IStudentService
     {
+        // MongoDB collection for Student documents
         private readonly IMongoCollection<Student> _students;
 
-        public StudentService(IStudentStoreDatabaseSettings settings, IMongoClient mongoClient) 
+        // Constructor initializes the MongoDB collection using settings and client
+        public StudentService(IStudentStoreDatabaseSettings settings, IMongoClient mongoClient)
         {
+            // Get the specified database from MongoDB
             var database = mongoClient.GetDatabase(settings.DatabaseName);
+
+            // Get the student collection from the database
             _students = database.GetCollection<Student>(settings.StudentCoursesCollectionName);
         }
+
+        // Creates a new student record in the collection
         public Student Create(Student student)
         {
-            // Inserts the student object into the _students collection of the database
-            _students.InsertOne(student);
+            _students.InsertOne(student); // Insert the student document into MongoDB
             return student;
         }
 
-        // Get() method is used to return list of all the students
+        // Retrieves all student records from the collection
         public List<Student> Get()
         {
-            return _students.Find(student => true).ToList(); // Lambda Expression always returns true for the student to get the list of all the students
+            // Find all documents; 'student => true' means select all
+            return _students.Find(student => true).ToList();
         }
 
-        // Get(string id) returns a single student by id
+        // Retrieves a specific student record by ID
         public Student Get(string id)
         {
+            // Find the first student with matching ID
             return _students.Find(student => student.Id == id).FirstOrDefault();
         }
 
-        // Remove(string id) removes or deletes student by id
+        // Deletes a student record by ID
         public void Remove(string id)
         {
+            // Delete the student where ID matches
             _students.DeleteOne(student => student.Id == id);
         }
 
-        // Update() methods updates the student with id with the updated value of student(2)
+        // Updates an existing student record by ID
         public void Update(string id, Student student)
         {
-            student.Id = id;
+            student.Id = id; // Ensure the ID is set correctly
+            // Replace the old record with the updated student object
             _students.ReplaceOne(s => s.Id == id, student);
         }
     }
